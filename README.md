@@ -4,7 +4,8 @@ Gacha Generator
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+Generate your own gacha and play it. <br /> 
+[Documentation](https://documenter.getpostman.com/view/17220230/2s93kxcRod_)
 
 ## Getting Started
 ```
