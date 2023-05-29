@@ -1,7 +1,8 @@
 const expect = require("chai").expect;
-const request = require("supertest");
-const { SpinGame, Prize, SpinGameHistory } = require("../../models");
-const app = require("../../app");
+import request from "supertest";
+import db from '../../models'
+const { SpinGame, Prize, SpinGameHistory } = db
+import app from "../../app";
 
 let spinGameId = '';
 
@@ -70,9 +71,10 @@ describe("Testing Spin Games Endpoint", () => {
         .get("/spin-games/" + "abc123")
       const data = res.body;
       expect(res.status).to.equal(400);
-      expect(data).to.have.property("error");
-      expect(data.error[0]).to.have.property("msg", "Invalid value")
-      expect(data.error[0]).to.have.property("location", "params")
+      expect(data).to.have.property("message", "Validation failed");
+      expect(data).to.have.property("errors");
+      expect(data.errors[0]).to.have.property("msg", "Invalid value")
+      expect(data.errors[0]).to.have.property("location", "params")
     })
 
     it("should not return a spin game if already deleted", async () => {
@@ -115,12 +117,12 @@ describe("Testing Spin Games Endpoint", () => {
   
       const spinGame = await SpinGame.findByPk(spinGameId, { include: [Prize]});
       expect(spinGame.Prizes.length).to.eql(3);
-      expect(spinGame.Prizes.map(el=>(el.name))).to.include("phone");
-      expect(spinGame.Prizes.map(el=>(el.probability))).to.include("0.315");
-      expect(spinGame.Prizes.map(el=>(el.name))).to.include("gold");
-      expect(spinGame.Prizes.map(el=>(el.probability))).to.include("0.15");
-      expect(spinGame.Prizes.map(el=>(el.name))).to.include("piano");
-      expect(spinGame.Prizes.map(el=>(el.probability))).to.include("0.35");
+      expect(spinGame.Prizes.map((el: { name: string; })=>(el.name))).to.include("phone");
+      expect(spinGame.Prizes.map((el: { probability: string; })=>(el.probability))).to.include("0.315");
+      expect(spinGame.Prizes.map((el: { name: string; })=>(el.name))).to.include("gold");
+      expect(spinGame.Prizes.map((el: { probability: string; })=>(el.probability))).to.include("0.15");
+      expect(spinGame.Prizes.map((el: { name: string; })=>(el.name))).to.include("piano");
+      expect(spinGame.Prizes.map((el: { probability: string; })=>(el.probability))).to.include("0.35");
     })
 
     it("should not update the existing spin game with prizes exceeding 100%", async () => {

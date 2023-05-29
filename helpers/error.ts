@@ -1,10 +1,16 @@
-module.exports = (err, req, res, next) => {
+import { Request, Response } from "express";
+
+export default (err: any, req: Request, res: Response, next: any) => {
   console.log('====================================');
   console.log(err);
   console.log('====================================');
 
   if (err.fromValidator) {
-    res.status(400).json({error: err.errors})
+    return res.status(400).json({
+      status: 400,
+      message: `Validation failed`,
+      errors: err.errors,
+    });
   } else if (err.code) {
     res.status(err.code).json({
       status: err.code,

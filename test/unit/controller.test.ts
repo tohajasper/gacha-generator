@@ -1,19 +1,19 @@
 const expect = require("chai").expect;
-const Service = require('../../services')
-const Controller = require('../../controllers')
-const sinon = require("sinon")
+import Service from '../../services';
+import Controller from '../../controllers';
+import sinon from "sinon";
+import httpMocks from 'node-mocks-http';
 
 describe("Testing Spin Games Controller", () => {
-  let request = {
+  let request = httpMocks.createRequest({
     body: {},
     spinGame: {
       id: 'mockId'
     }
-  }
-  let response = {
-    status: () => { },
-    send: () => { }
-  }
+  });
+
+  let response = httpMocks.createResponse()
+  
   let next = () => { }
   const spy = sinon.spy(response)
   const mock = sinon.mock(Service)

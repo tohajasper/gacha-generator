@@ -1,9 +1,11 @@
-const { SpinGame, Prize } = require('../models')
+import db from '../models'
+const { SpinGame, Prize } = db
+import { Request, Response, NextFunction } from 'express';
 
-const checkSpinGameExists = async (req, res, next) => {
+export const checkSpinGameExists = async (req : Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id
-    let spinGame;
+    let spinGame: any;
     let includeClause = {};
     if (
       req.method === 'GET' && req.path.includes('/spin-games/') ||
@@ -21,5 +23,3 @@ const checkSpinGameExists = async (req, res, next) => {
     next(error);
   }
 }
-
-module.exports = checkSpinGameExists

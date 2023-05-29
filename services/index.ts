@@ -1,8 +1,11 @@
-const { SpinGame, Prize, SpinGameHistory } = require('../models');
+import db from '../models'
+const { SpinGame, Prize, SpinGameHistory } = db
+import { NextFunction } from 'express';
+import { CreateSpinGameDTO, UpdateSpinGameDTO } from './types/service.types';
 
-class Service {
+export default class Service {
 
-  static async createSpinGame({ name }, next) {
+  static async createSpinGame({ name } : CreateSpinGameDTO, next: NextFunction) {
     try {
       const newSpinGame = await SpinGame.create({
         name
@@ -13,21 +16,13 @@ class Service {
     }
   }
 
-  // static async getSpinGame(spinGame, next) { // optional 
-  //   try {
-  //     return spinGame;
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
-
-  static async updateSpinGame(spinGame, { spinGameName, prizes }, next) {
+  static async updateSpinGame(spinGame: any, { spinGameName, prizes }: UpdateSpinGameDTO, next: NextFunction) {
     try {
       if (spinGameName) await spinGame.update({ name: spinGameName });
 
       if (prizes && prizes.length) {
         // cast the probability to number here since decimal isnt really available in JS so sequelize return it as string instead; source:https://github.com/sequelize/sequelize/issues/8019
-        const totalCurrentProbabilityRatio = spinGame.Prizes.reduce((acc, curr) => acc + Number(curr.probability), 0)
+        const totalCurrentProbabilityRatio = spinGame.Prizes.reduce((acc: number, curr: { probability: any; }) => acc + Number(curr.probability), 0)
         const totalNewProbabilityRatio = prizes.reduce((acc, curr) => acc + curr.probability, 0)
 
         if (totalCurrentProbabilityRatio + totalNewProbabilityRatio > 1)
@@ -49,7 +44,7 @@ class Service {
     }
   }
 
-  static async deleteSpinGame(spinGame, next) {
+  static async deleteSpinGame(spinGame: any, next: NextFunction) {
     try {
       await spinGame.destroy()
       return true
@@ -58,7 +53,7 @@ class Service {
     }
   }
 
-  static async spinLastGame(next) {
+  static async spinLastGame(next: NextFunction) {
     try {
       const lastSpinGame = await SpinGame.findOne({ 
         include: [{ 
@@ -84,7 +79,7 @@ class Service {
         }
       }
 
-      await this.saveGameHistory(roll, prize, lastSpinGame) // save play history
+      await this.saveGameHistory(roll, prize) // save play history
 
       return { yourRoll: roll, yourPrize: prize?.name || 'You got no prize.. , Try Again!'}
     } catch (error) {
@@ -92,7 +87,7 @@ class Service {
     }
   }
 
-  static async saveGameHistory(roll, prize){
+  static async saveGameHistory(roll: number, prize: any){
     try {
       await SpinGameHistory.create({ roll, prize_data: prize })
     } catch (error) {
@@ -100,5 +95,3 @@ class Service {
     }
   }
 }
-
-module.exports = Service

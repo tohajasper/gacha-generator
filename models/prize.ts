@@ -1,17 +1,28 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Prize extends Model {
+import { Model } from 'sequelize';
+
+interface PrizeAttributes {
+  id: string;
+  name: string;
+  probability: number;
+  spin_game_id: string;
+}
+
+module.exports = (sequelize: any, DataTypes: any) => {
+  class Prize extends Model<PrizeAttributes> implements PrizeAttributes {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    id!: string;
+    name!: string;
+    probability!: number;
+    spin_game_id!: string;
+
+    static associate(models: any) {
       // define association here
-      this.belongsTo(models.SpinGame, {
+      Prize.belongsTo(models.SpinGame, {
         foreignKey: 'spin_game_id'
       })
     }

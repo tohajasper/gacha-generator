@@ -1,9 +1,10 @@
 const expect = require("chai").expect;
-const Service = require('../../services')
-const { SpinGame, Prize, SpinGameHistory } = require("../../models");
-const sinon = require("sinon")
+import Service from '../../services';
+import db from '../../models'
+const { SpinGame, Prize, SpinGameHistory } = db
+import sinon from "sinon";
 
-describe.only("Testing Spin Games Controller", () => {
+describe("Testing Spin Games Service", () => {
   let next = () => { }
   let mockSpinGameData = {
     id: 'mockId',

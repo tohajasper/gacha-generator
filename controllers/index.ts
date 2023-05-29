@@ -1,7 +1,8 @@
-const Service = require('../services')
+import Service from '../services'
+import { Request, Response, NextFunction } from "express"
 
-class Controller {
-  static async createSpinGame(req, res, next) {
+export default class Controller {
+  static async createSpinGame(req : Request, res: Response, next: NextFunction) {
     const input = req.body
     try {
       const newSpinGame = await Service.createSpinGame(input ,next)
@@ -12,7 +13,7 @@ class Controller {
     }
   }
 
-  static async getSpinGame(req, res, next) {
+  static async getSpinGame(req : Request, res: Response, next: NextFunction) {
     const spinGame = req.spinGame
     try {
       res.send({ SpinGame: spinGame })
@@ -21,7 +22,7 @@ class Controller {
     }
   }
 
-  static async updateSpinGame(req, res, next) {
+  static async updateSpinGame(req : Request, res: Response, next: NextFunction) {
     const spinGame = req.spinGame
     const spinGameData = req.body
     try {
@@ -32,7 +33,7 @@ class Controller {
     }
   }
 
-  static async deleteSpinGame(req, res, next) {
+  static async deleteSpinGame(req : Request, res: Response, next: NextFunction) {
     const spinGame = req.spinGame
     try {
       const deleted = await Service.deleteSpinGame(spinGame ,next)
@@ -43,7 +44,7 @@ class Controller {
     }
   }
 
-  static async spinLastGame(req, res, next) {
+  static async spinLastGame(req : Request, res: Response, next: NextFunction) {
     try {
       const SpinGame = await Service.spinLastGame(next)
       res.send({ SpinGame })
@@ -52,5 +53,3 @@ class Controller {
     }
   }
 }
-
-module.exports = Controller
