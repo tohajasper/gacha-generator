@@ -5,7 +5,7 @@ Gacha Generator
 ## Description
 
 Generate your own gacha and play it. <br /> 
-[Documentation](https://documenter.getpostman.com/view/17220230/2s93kxcRod_)
+[Documentation](https://documenter.getpostman.com/view/17220230/2s93kxcRod)
 
 ## Getting Started
 ```
